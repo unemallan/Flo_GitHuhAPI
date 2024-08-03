@@ -1,5 +1,8 @@
-!#/bin/bash
+#!/bin/bash
+
+echo "Installing Needed NPM Packages"
 
 npm init -y
-npm install octokit
+npm i octokit
 npm i github-profile
+npm i express ejs
