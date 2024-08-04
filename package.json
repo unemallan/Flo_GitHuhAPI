@@ -15,7 +15,9 @@
     "ejs": "2.6.1",
     "express": "4.16.3",
     "morgan": "1.9.0",
-    "path": "0.12.7"
+    "path": "0.12.7",
+    "github-profile": "^1.0.1",
+    "octokit": "^4.0.2"
   },
   "dependencies": {}
 }
