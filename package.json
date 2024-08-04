@@ -1,18 +1,21 @@
 {
-  "name": "flo_githuhapi",
+  "name": "node-js-with-express-and-ejs",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Structure application with Node JS with Express and EJS. Using simple requests.",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "ejs": "^3.1.10",
-    "express": "^4.19.2",
-    "github-profile": "^1.0.1",
-    "octokit": "^4.0.2"
-  }
+  "author": "Wanderson Araujo",
+  "license": "GNU",
+  "devDependencies": {
+    "body-parser": "1.18.3",
+    "cookie-parser": "1.4.3",
+    "ejs": "2.6.1",
+    "express": "4.16.3",
+    "morgan": "1.9.0",
+    "path": "0.12.7"
+  },
+  "dependencies": {}
 }
