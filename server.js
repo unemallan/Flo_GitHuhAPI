@@ -1,7 +1,10 @@
+const { default: axios } = require("axios");
 var express = require('express');
 var path = require('path');
 const github = require ('github-profile');
+var request = require('request')
 var routes = require('./routes/index');
+const { Client } = require("@notionhq/client")
  
 // Create a new Express application.
 var app = express();
@@ -26,6 +29,55 @@ app.post('/getinfo', (req,res) =>{
     });
 });
 
+const gitClientId = process.env.GITHUB_CLIENT_ID;
+const gitClientSecret = process.env.GITHUB_CLIENT_SECRET;
+const gitAuthURI = process.env.GITHUB_AUTH_URL
+
+const gitURIEncoded = Buffer.from(`${gitAuthURI}`).toString("base64");
+app.get("/auth", (req, res) => {
+    res.redirect(gitAuthURI);
+});
+
+app.get("/callback", (req, res) => {
+    axios.post("https://github.com/login/oauth/access_token", {
+        client_id: gitClientId,
+        client_secret: gitClientSecret,
+        code: req.query.code
+    }, {
+        headers: {
+            Accept: "application/json"
+        }
+    }).then((result) => {
+        console.log(result.data.access_token)
+        res.send("you are authorized " + result.data.access_token)
+    }).catch((err) => {
+        console.log(err);
+    })
+});
+
+
+const clientId = process.env.OAUTH_CLIENT_ID;
+const clientSecret = process.env.OAUTH_CLIENT_SECRET;
+const redirectUri = process.env.OAUTH_REDIRECT_URI;
+
+// encode in base 64
+const encoded = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
+
+app.get("/notion", (req, res) => {
+    axios.post("https://api.notion.com/v1/oauth/token",
+    {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Basic ${encoded}`
+        }
+    }).then((result) => {
+        console.log(result.data.access_token)
+        res.send("you are authorized " + result.data.your-temporary-code)
+    }).catch((err) => {
+        console.log(err);
+    })
+});
 
 const port_runing = 3000;
 
