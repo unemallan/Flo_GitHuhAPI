@@ -17,7 +17,8 @@
     "github-profile": "^1.0.1",
     "morgan": "1.9.0",
     "octokit": "^4.0.2",
-    "path": "0.12.7"
+    "path": "0.12.7",
+    "nodemon": "^1.18.10"
   },
   "dependencies": {
     "@notionhq/client": "^2.2.15",
