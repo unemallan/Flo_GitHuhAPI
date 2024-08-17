@@ -1,0 +1,79 @@
+version: '3'
+
+services:
+  nodejs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nodejs
+    container_name: nodejs
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MONGO_USERNAME=$MONGO_USERNAME
+      - MONGO_PASSWORD=$MONGO_PASSWORD
+      - MONGO_HOSTNAME=db
+      - MONGO_PORT=$MONGO_PORT
+      - MONGO_DB=$MONGO_DB
+      - OAUTH_CLIENT_ID=$OAUTH_CLIENT_ID
+      - OAUTH_CLIENT_SECRET=$OAUTH_CLIENT_SECRET
+      - NOTION_AUTH_URL=$NOTION_AUTH_URL
+      - GITHUB_CLIENT_ID=$GITHUB_CLIENT_ID
+      - GITHUB_CLIENT_SECRET=$GITHUB_CLIENT_SECRET
+      - GITHUB_AUTH_URL=$GITHUB_AUTH_URL
+    volumes:
+      - .:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    networks:
+      - app-network
+    command: ./wait-for-db.sh db:27017 -- /home/node/app/node_modules/.bin/nodemon server.js
+
+  db:
+    image: mongo
+    container_name: db
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$MONGO_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASSWORD
+    volumes:
+      - dbdata:/data/db
+    networks:
+      - app-network
+
+  nginx:
+    container_name: 'nginx'
+    image: 'jc21/nginx-proxy-manager'
+    restart: 'unless-stopped'
+    networks:
+      - app-network
+    ports:
+      - '81:81'
+      - '443:443'
+      - '63:63'
+    volumes:
+      - '${PWD}/data/nginx-proxy-manager/data:/data'
+      - '${PWD}/data/nginx-proxy-manager/letsencrypt:/etc/letsencrypt'
+      - '${PWD}/data/nginx/snippets:/snippets'
+    environment:
+      TZ: 'Canada/Toronto'
+  authelia:
+    container_name: 'authelia'
+    image: 'authelia/authelia'
+    restart: 'unless-stopped'
+    networks:
+      - app-network
+    expose:
+      - 9091
+    volumes:
+      - '${PWD}/data/authelia/config:/config'
+    environment:
+      TZ: 'Canada/Toronto'
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+  node_modules:

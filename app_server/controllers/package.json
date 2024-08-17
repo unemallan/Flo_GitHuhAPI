@@ -1,0 +1,30 @@
+{
+  "name": "node-js-with-express-and-ejs",
+  "version": "1.0.0",
+  "description": "Structure application with Node JS with Express and EJS. Using simple requests.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "Wanderson Araujo",
+  "license": "GNU",
+  "devDependencies": {
+    "body-parser": "1.18.3",
+    "cookie-parser": "1.4.3",
+    "ejs": "2.6.1",
+    "express": "^4.16.3",
+    "github-profile": "^1.0.1",
+    "morgan": "1.9.0",
+    "nodemon": "^1.18.10",
+    "octokit": "^4.0.2",
+    "path": "0.12.7"
+  },
+  "dependencies": {
+    "@notionhq/client": "^2.2.15",
+    "axios": "^1.7.3",
+    "axois": "^0.0.1-security",
+    "mongoose": "^8.5.3",
+    "request": "^2.88.2"
+  }
+}
