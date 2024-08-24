@@ -58,10 +58,16 @@ app.get("/callback", (req, res) => {
 
 const clientId = process.env.OAUTH_CLIENT_ID;
 const clientSecret = process.env.OAUTH_CLIENT_SECRET;
-const redirectUri = process.env.OAUTH_REDIRECT_URI;
+const redirectUri = process.env.NOTION_AUTH_URL;
 
 // encode in base 64
 const encoded = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
+const notionURIEncoded = Buffer.from(`${redirectUri}`).toString("base64");
+
+app.get("/notionAuth", (req, res) => {
+    res.redirect(redirectUri);
+});
+
 
 app.get("/notion", (req, res) => {
     axios.post("https://api.notion.com/v1/oauth/token",
